@@ -15,7 +15,7 @@ the functions readString.append() and readString.contains() where replaced
 
 byte mac[] = { 0x54, 0x55, 0x58, 0x10, 0x00, 0x24 };  // entspricht einer MAC von 84.85.88.16.0.36
 byte ip[]  = { 192, 168, 1, 177 };                  // IP-Adresse
-byte gateway[] = { 192, 168, 168, 1 };                // Gateway
+byte gateway[] = { 192, 168, 1, 1 };                // Gateway
 byte subnet[]  = { 255, 255, 255, 0 };
 
 Server server(80);
@@ -28,12 +28,14 @@ int Pin6 = 6;
 String readString = String(100);      // string for fetching data from address
 boolean Pin3ON = false;                  // Status flag
 boolean Pin4ON = false;
+boolean Pin5ON = false; //butzzzz junge
 
 void setup(){
 Ethernet.begin(mac, ip, gateway, subnet);
 server.begin();
 pinMode(Pin3, OUTPUT);
 pinMode(Pin4, OUTPUT);
+pinMode(Pin5, OUTPUT);
 
 Serial.begin(9600); }
 
@@ -82,14 +84,28 @@ if(readString.indexOf("4=ausschalten") > -1){
  Serial.println("Pin 4 ausgeschaltet!");
  Pin4ON = false;
 }
+if(readString.indexOf("5=einschalten") > -1) {
+ digitalWrite(Pin5, HIGH);
+ Serial.println("Pin 5 eingeschaltet!");
+ Pin5ON = true;
+}
+if(readString.indexOf("5=ausschalten") > -1){
+ digitalWrite(Pin5, LOW);
+ Serial.println("Pin 5 ausgeschaltet!");
+ Pin5ON = false;
+}
 
 if(readString.indexOf("all=Alles+aus") > -1){
  digitalWrite(Pin3, LOW);
  digitalWrite(Pin4, LOW);
+ digitalWrite(Pin5, LOW);
  Serial.println("Alles ausgeschaltet");
  Pin3ON = false;
  Pin4ON = false;
+ Pin5ON = false;
 }
+
+
 //--------------------------HTML------------------------
 client.println("HTTP/1.1 200 OK");
 
@@ -148,9 +164,6 @@ client.println("<tr bgColor='#222222'>");
    client.println("<td align='center'><font color='green' size='5'>ON");
  else
    client.println("<td align='center'><font color='#CFCFCF' size='5'>OFF");
-   
-client.println("</tr>");
-
    
 client.println("</tr>");
 
