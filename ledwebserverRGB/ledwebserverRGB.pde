@@ -28,7 +28,7 @@ int Pin6 = 6;
 String readString = String(100);      // string for fetching data from address
 boolean Pin3ON = false;                  // Status flag
 boolean Pin4ON = false;
-boolean Pin5ON = false; //butzzzz junge
+boolean Pin5ON = false;
 
 void setup(){
 Ethernet.begin(mac, ip, gateway, subnet);
